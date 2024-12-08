@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>할 일 목록</title>
+    <style>
+        ul {
+            list-style-type: none; /* 글머리 기호 제거 */
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .completed {
+            text-decoration: line-through; /* 가로 취소선 */
+            color: black; /* 검은색 텍스트 */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function showDateInput() {
+            const dateInput = document.getElementById("dateInput");
+            if (!dateInput.classList.contains("hidden")) return;
+
+            const taskInput = document.getElementById("taskInput").value.trim();
+            if (taskInput) {
+                dateInput.classList.remove("hidden"); // 날짜 필드 표시
+                dateInput.focus(); // 포커스 이동
+            } else {
+                alert("할 일을 먼저 입력해주세요!");
+            }
+        }
+
+        function addItem() {
+            const list = document.getElementById("taskList");
+            const taskInput = document.getElementById("taskInput");
+            const dateInput = document.getElementById("dateInput");
+
+            if (taskInput.value && dateInput.value) {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <input type="checkbox" class="taskCheckbox" onchange="toggleCompletionAndRemove(this)">
+                    <span class="taskText">
+                        ${taskInput.value} 종료 
+                        <input type="date" value="${dateInput.value}" class="taskDate" readonly>
+                    </span>
+                    <button onclick="calculateDays(this)">남은일수 계산</button>
+                    <span class="remainingDays"></span>
+                    <button onclick="removeItem(this)" class="hidden">제거하기</button>
+                `;
+                list.appendChild(li);
+
+                taskInput.value = "";
+                dateInput.value = "";
+                dateInput.classList.add("hidden"); // 날짜 필드 숨기기
+            } else {
+                alert("할 일과 날짜를 모두 입력하세요.");
+            }
+        }
+
+        function calculateDays(button) {
+            const li = button.parentElement;
+            const dateInput = li.querySelector('input[type="date"]').value;
+            const remainingDaysSpan = li.querySelector(".remainingDays");
+            const targetDate = new Date(dateInput);
+            const today = new Date();
+            const remainingDays = parseInt((targetDate - today) / (1000 * 60 * 60 * 24), 10);
+
+            if (!isNaN(remainingDays)) {
+                remainingDaysSpan.textContent = `남은일수: ${remainingDays}일 남았습니다.`;
+            } else {
+                remainingDaysSpan.textContent = "유효한 날짜를 입력하세요.";
+            }
+        }
+
+        function toggleCompletionAndRemove(checkbox) {
+            const li = checkbox.parentElement;
+            const taskText = li.querySelector(".taskText");
+            const removeButton = li.querySelector('button[onclick="removeItem(this)"]');
+
+            if (checkbox.checked) {
+                taskText.classList.add("completed");
+                removeButton.classList.remove("hidden"); // 체크박스 체크 시 제거 버튼 표시
+            } else {
+                taskText.classList.remove("completed");
+                removeButton.classList.add("hidden"); // 체크박스 해제 시 제거 버튼 숨김
+            }
+        }
+
+        function removeItem(button) {
+            const li = button.parentElement;
+            li.remove();
+        }
+    </script>
+</head>
+<body>
+    <h1>할 일 목록</h1>
+    <div>
+        <!-- 할 일 입력 -->
+        <input 
+            type="text" 
+            id="taskInput" 
+            placeholder="할 일을 입력하세요">
+        <!-- 날짜 선택 (초기에 숨김) -->
+        <input 
+            type="date" 
+            id="dateInput" 
+            class="hidden">
+        <button onclick="showDateInput()">날짜 추가</button>
+        <button onclick="addItem()">추가하기</button>
+    </div>
+    <ul id="taskList"></ul>
+</body>
+</html>
