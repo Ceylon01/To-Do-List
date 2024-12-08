@@ -6,15 +6,15 @@
     <title>할 일 목록</title>
     <style>
         ul {
-            list-style-type: none; /* 글머리 기호 제거 */
+            list-style-type: none; 
             padding: 0;
         }
         li {
             margin: 10px 0;
         }
         .completed {
-            text-decoration: line-through; /* 가로 취소선 */
-            color: black; /* 검은색 텍스트 */
+            text-decoration: line-through; 
+            color: black; 
         }
         .hidden {
             display: none;
@@ -27,8 +27,8 @@
 
             const taskInput = document.getElementById("taskInput").value.trim();
             if (taskInput) {
-                dateInput.classList.remove("hidden"); // 날짜 필드 표시
-                dateInput.focus(); // 포커스 이동
+                dateInput.classList.remove("hidden"); 
+                dateInput.focus(); 
             } else {
                 alert("할 일을 먼저 입력해주세요!");
             }
@@ -55,7 +55,7 @@
 
                 taskInput.value = "";
                 dateInput.value = "";
-                dateInput.classList.add("hidden"); // 날짜 필드 숨기기
+                dateInput.classList.add("hidden"); 
             } else {
                 alert("할 일과 날짜를 모두 입력하세요.");
             }
@@ -83,10 +83,10 @@
 
             if (checkbox.checked) {
                 taskText.classList.add("completed");
-                removeButton.classList.remove("hidden"); // 체크박스 체크 시 제거 버튼 표시
+                removeButton.classList.remove("hidden"); 
             } else {
                 taskText.classList.remove("completed");
-                removeButton.classList.add("hidden"); // 체크박스 해제 시 제거 버튼 숨김
+                removeButton.classList.add("hidden"); // 
             }
         }
 
@@ -99,12 +99,12 @@
 <body>
     <h1>할 일 목록</h1>
     <div>
-        <!-- 할 일 입력 -->
+        
         <input 
             type="text" 
             id="taskInput" 
             placeholder="할 일을 입력하세요">
-        <!-- 날짜 선택 (초기에 숨김) -->
+       
         <input 
             type="date" 
             id="dateInput" 
